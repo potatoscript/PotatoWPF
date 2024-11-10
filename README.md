@@ -810,7 +810,7 @@ namespace Fw.Data
         Uri BaseImageUri { get; }
 ```
 
-- **Class Declaration**: The `DBHelper` class is encapsulated in the `Fw.Data` namespace and provides methods to interact with a SQLite database. 
+- **Class Declaration**: The `DBHelper` class is encapsulated in the `PotatoWPF.Data` namespace and provides methods to interact with a SQLite database. 
 - **Private Fields**: 
   - `_connectionString`: The connection string used to connect to the SQLite database.
   - `DbFilePath`: The full path to the SQLite database file.
@@ -846,10 +846,10 @@ private void InitializeResources()
 {
     resources = new Dictionary<string, string>
     {
-        { "strKiso", Application.Current.Resources["str_kiso"] as string },
-        { "strHitsuyou", Application.Current.Resources["str_hitsuyou"] as string },
+        { "strA", Application.Current.Resources["str_A"] as string },
+        { "strB", Application.Current.Resources["str_B"] as string },
         ...
-        { "strKukei", Application.Current.Resources["str_kukei"] as string }
+        { "strZ", Application.Current.Resources["str_Z"] as string }
     };
 }
 ```
@@ -888,11 +888,10 @@ private void CreateTables(SQLiteConnection connection)
     var createTableCommands = new List<string>
     {
         @"
-        CREATE TABLE IF NOT EXISTS KutaiDBTable (
+        CREATE TABLE IF NOT EXISTS PotatoDBTable (
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
             Type TEXT,
             Title TEXT,
-            SekisanYouhi TEXT,
             Deleteable INTEGER
         );",
         ...
@@ -905,7 +904,7 @@ private void CreateTables(SQLiteConnection connection)
 }
 ```
 
-- **SQL Commands**: This method creates a list of SQL commands that define the structure of the tables (e.g., `KutaiDBTable`, `KihonbuzaiDBTable`, etc.). Each table has columns with different data types such as `INTEGER`, `TEXT`, and `DOUBLE`.
+- **SQL Commands**: This method creates a list of SQL commands that define the structure of the tables (e.g., `ADBTable`, `BDBTable`, etc.). Each table has columns with different data types such as `INTEGER`, `TEXT`, and `DOUBLE`.
 - **Executing Commands**: The commands are executed via the `ExecuteNonQuery` method to ensure the tables are created if they do not already exist.
 
 ### 6. **Executing SQL (`ExecuteNonQuery`)**:
@@ -933,15 +932,15 @@ private void CreateData()
     {
         connection.Open();
 
-        InsertInitialDataIfEmpty(connection, "KutaiDBTable", GetKutaiData());
-        InsertInitialDataIfEmpty(connection, "KihonbuzaiDBTable", GetKihonbuzaiData());
+        InsertInitialDataIfEmpty(connection, "PotatoDBTable", GetPotatoData());
+        InsertInitialDataIfEmpty(connection, "ADBTable", GetAData());
         ...
     }
 }
 ```
 
 - **Initializing Resources**: Calls the `InitializeResources` method to ensure that the resource strings are loaded.
-- **Inserting Data**: It checks if the tables are empty and, if they are, it inserts initial data using the `InsertInitialDataIfEmpty` method. The data is obtained by methods like `GetKutaiData`, `GetKihonbuzaiData`, etc.
+- **Inserting Data**: It checks if the tables are empty and, if they are, it inserts initial data using the `InsertInitialDataIfEmpty` method. The data is obtained by methods like `GetAData`, `GetBData`, etc.
 
 ### 8. **Inserting Data (`InsertInitialDataIfEmpty`)**:
 
@@ -1034,106 +1033,5 @@ public IEnumerable<Dictionary<string, object>> ReadData(string tableName)
 
 - **Reading Data**: Executes a `SELECT` query to retrieve all data from the specified table. It reads each row and stores the data in a dictionary, returning the result as a collection of dictionaries.
 
-
-
-### Conclusion:
-This `DBHelper` class handles creating a SQLite database, defining tables, inserting initial data, and retrieving data. The methods are designed to ensure that the database is correctly initialized and that the necessary data is always available for use within the application.
-- Usage:
-To use the `DatabaseHelper` class in the `ReadData`, `InsertData`, `UpdateData`, and `DeleteData` methods, you'll first need to refactor these methods to call the helper class methods instead of directly using SQLite commands. Here’s how you can modify each of these methods to utilize `DatabaseHelper`:
-
-1. **Initialize DatabaseHelper**  
-   First, create an instance of `DatabaseHelper` with the connection string.
-
-   ```csharp
-   private DatabaseHelper _databaseHelper;
-
-   public UserControlConstructor()
-   {
-       string connectionString = $"Data Source={DbFilePath};Version=3;";
-       _databaseHelper = new DatabaseHelper(connectionString);
-   }
-   ```
-
-2. **Refactor `LoadAllData`**  
-   Modify `LoadAllData` to use the `ReadData` method from `DatabaseHelper`.
-
-   ```csharp
-   public void ReadData()
-   {
-       var data = _databaseHelper.ReadData("KoukanDBTable");
-
-       foreach (var row in data)
-       {
-           var item = new DialogEnvSetupModel
-           {
-               ID = Convert.ToInt32(row["ID"]),
-               Title = row["Title"].ToString(),
-               Type = row["Type"].ToString(),
-               Dim1 = Convert.ToDouble(row["Dim1"]),
-               Dim2 = Convert.ToDouble(row["Dim2"]),
-               Length = Convert.ToDouble(row["Length"]),
-               ImageSource = row["ImageSource"].ToString(),
-               Deleteable = Convert.ToInt32(row["Deleteable"])
-           };
-           DataList.Add(item);
-       }
-   }
-   ```
-
-3. **Refactor `InsertKoukanData`**  
-   Modify `InsertKoukanData` to use the `InsertData` method from `DatabaseHelper`.
-
-   ```csharp
-   private void InsertData(string title, string type, double dim1, double dim2, double length)
-   {
-       var data = new List<Dictionary<string, object>>
-       {
-           new Dictionary<string, object>
-           {
-               { "Title", title },
-               { "Type", type },
-               { "Dim1", dim1 },
-               { "Dim2", dim2 },
-               { "Length", length },
-               { "ImageSource", type },
-               { "Deleteable", 1 }
-           }
-       };
-       _databaseHelper.InsertData("KoukanDBTable", data);
-   }
-   ```
-
-4. **Refactor `UpdateKoukanData`**  
-   Modify `UpdateKoukanData` to use the `UpdateData` method from `DatabaseHelper`.
-
-   ```csharp
-   public void UpdateData(DialogEnvSetupModel target)
-   {
-       var updatedValues = new Dictionary<string, object>
-       {
-           { "Title", target.Title },
-           { "Type", target.Type },
-           { "Dim1", target.Dim1 },
-           { "Dim2", target.Dim2 },
-           { "Length", target.Length }
-       };
-       var conditions = new Dictionary<string, object> { { "ID", target.ID } };
-
-       _databaseHelper.UpdateData("KoukanDBTable", updatedValues, conditions);
-   }
-   ```
-
-5. **Refactor `DeleteKoukanData`**  
-   Modify `DeletenData` to use the `DeleteData` method from `DatabaseHelper`.
-
-   ```csharp
-   private void DeleteKoukanData(string id)
-   {
-       var conditions = new Dictionary<string, object> { { "ID", id } };
-       _databaseHelper.DeleteData("KoukanDBTable", conditions);
-   }
-   ```
-
-Each method now leverages `DatabaseHelper`, making your code more modular and reusable. This setup also simplifies managing SQL commands, as `DatabaseHelper` encapsulates these details, allowing you to keep the CRUD operations consistent across different parts of your application.
 
 
