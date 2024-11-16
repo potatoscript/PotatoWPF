@@ -3,31 +3,19 @@ using PotatoWPF.Templates;
 using PotatoWPF.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PotatoWPF.Views
 {
-    /// <summary>
-    /// Interaction logic for Item1View.xaml
-    /// </summary>
-    public partial class Item1View : UserControl
+    public partial class Recipe1View : UserControl
     {
         //Uri baseUri = (Uri)Application.Current.Resources["BaseImageUri"];
 
         private readonly Item1ViewModel viewModel;
         
-        public List<Item1Model> addedRowIds { get; } = new List<Item1Model>();
+        public List<PotatoModel> addedRowIds { get; } = new List<PotatoModel>();
 
         private Dictionary<string, DateTime> lastEditTimes = new Dictionary<string, DateTime>();
 
@@ -50,11 +38,12 @@ namespace PotatoWPF.Views
             {
                 { "str_OnCancelClicked", (string)Application.Current.Resources["str_OnCancelClicked"] },
                 { "str_OnApplyClicked", (string)Application.Current.Resources["str_OnApplyClicked"] },
-                { "str_NoRowToChange", (string)Application.Current.Resources["str_NoRowToChange"] }
+                { "str_NoRowToChange", (string)Application.Current.Resources["str_NoRowToChange"] },
+                { "str_title", (string)Application.Current.Resources["str_recipe01"] },
             };
         }
 
-        public Item1View()
+        public Recipe1View()
         {
             InitializeComponent();
 
@@ -68,7 +57,7 @@ namespace PotatoWPF.Views
             // Load localized strings once
             localizedStrings = LoadLocalizedStrings();
 
-            TableControl.TitleTextBlock.Text = "My Potato";
+            TableControl.TitleLabel.Content = "";
 
             RefreshDataGrid();
         }
@@ -93,7 +82,7 @@ namespace PotatoWPF.Views
                 new DataGridTextColumn
                 {
                     Header = "ID",
-                    Binding = new System.Windows.Data.Binding("ID"),
+                    Binding = new System.Windows.Data.Binding("Id"),
                     Visibility = Visibility.Collapsed
                 },
                 new DataGridTextColumn
@@ -136,11 +125,6 @@ namespace PotatoWPF.Views
                     }
                 }
             };
-
-            var a = new TableTemplate();
-
-            columns.Add(a.deleteTemplateColumn);
-
             // Assign columns to the DataGrid
             TableControl.SetColumns(columns);
         }
@@ -160,9 +144,9 @@ namespace PotatoWPF.Views
 
         private void TableControl_EditDataGridCell(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (e.Row.Item is Item1Model editedItem)
+            if (e.Row.Item is PotatoModel editedItem)
             {
-                string itemId = editedItem.ID.ToString();
+                string itemId = editedItem.Id.ToString();
                 DateTime currentTime = DateTime.Now;
 
                 // Check if item has been edited recently
@@ -219,7 +203,7 @@ namespace PotatoWPF.Views
 
         private void TableControl_AddNewClicked(object sender, RoutedEventArgs e)
         {
-            var newRow = new Item1Model
+            var newRow = new PotatoModel
             {
                 Title = "New Title",
                 Type = "NewType",
@@ -232,7 +216,7 @@ namespace PotatoWPF.Views
 
         private void TableControl_DeleteClicked(object sender, RoutedEventArgs e)
         {
-            if (sender is Item1Model selectedItem)
+            if (sender is PotatoModel selectedItem)
             {
                 addedRowIds.Remove(selectedItem); // Remove the selected item
                 //RemoveDataFromJson(selectedItem.ID);
@@ -241,7 +225,7 @@ namespace PotatoWPF.Views
                 {
                     viewModel.DataList.Remove(selectedItem);
                 }
-                TableControl.deletedRowIds.Add(selectedItem.ID.ToString());
+                TableControl.deletedRowIds.Add(selectedItem.Id.ToString());
                 TableControl.DataGrid.Items.Refresh();  // Refresh the DataGrid
             }
         }

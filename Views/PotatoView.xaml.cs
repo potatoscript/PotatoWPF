@@ -1,26 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PotatoWPF.Views
 {
     /// <summary>
-    /// Interaction logic for ProfileUserControl.xaml
+    /// Interaction logic for PotatoView.xaml
     /// </summary>
-    public partial class ProfileUserControl : UserControl
+    public partial class PotatoView : UserControl
     {
-        public ProfileUserControl()
+        public PotatoView()
         {
             InitializeComponent();
         }
@@ -36,8 +24,8 @@ namespace PotatoWPF.Views
                 // Load the corresponding content based on the selected tag
                 switch (tag)
                 {
-                    case "Item1View":
-                        content = new Item1View();
+                    case "Recipe1View":
+                        content = new Recipe1View();
                         // /.;/./((ITitleText)content).TitleText = (string)Application.Current.Resources["str_kiso"];
                         break;
                     default:

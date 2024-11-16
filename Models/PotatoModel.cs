@@ -2,14 +2,14 @@
 
 namespace PotatoWPF.Models
 {
-    public class Item1Model: BaseViewModel
+    public class PotatoModel: BaseViewModel
     {
 
         private int _id;
-        public int ID
+        public int Id
         {
             get => _id;
-            set => SetProperty(ref _id, value, nameof(ID));
+            set => SetProperty(ref _id, value, nameof(Id));
         }
 
         private string _title;

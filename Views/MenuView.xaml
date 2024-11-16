@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="PotatoWPF.Views.MenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PotatoWPF.Views"
+             xmlns:helper="clr-namespace:PotatoWPF.Data"
+             mc:Ignorable="d" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <helper:ImagePathConverter x:Key="ImagePathConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Title Row -->
+        <TextBlock Text="PotatoScript Recipe Menu"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="36"
+                   FontWeight="Bold"
+                   Foreground="#4B4B4B"
+                   Grid.Row="0"/>
+
+        <!-- Image Menu -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <!-- Recipe 1 Button with Image -->
+            <Button Width="150" Height="150" Background="Transparent" BorderBrush="Transparent" Click="Recipe01_Click" >
+                <StackPanel>
+                    <Image Source="{Binding Source={StaticResource str_recipe01}, Converter={StaticResource ImagePathConverter}}"
+                           Stretch="Uniform"/>
+                    <TextBlock Text="{StaticResource str_recipe01}" HorizontalAlignment="Center" Margin="0,10,0,0" FontWeight="Bold" />
+                </StackPanel>
+            </Button>
+
+            <!-- Recipe 2 Button with Image -->
+            <Button Width="150" Height="150" Background="Transparent" BorderBrush="Transparent" >
+                <StackPanel>
+                    <Image Source="{Binding Source={StaticResource str_recipe02}, Converter={StaticResource ImagePathConverter}}" 
+                           Stretch="Uniform"/>
+                    <TextBlock Text="{StaticResource str_recipe02}" HorizontalAlignment="Center" Margin="0,10,0,0" FontWeight="Bold" />
+                </StackPanel>
+            </Button>
+
+            <!-- Help Button with Image -->
+            <Button Width="150" Height="150" Background="Transparent" BorderBrush="Transparent" >
+                <StackPanel>
+                    <Image Source="{Binding Source={StaticResource str_recipe03}, Converter={StaticResource ImagePathConverter}}"  
+                           Stretch="Uniform"/>
+                    <TextBlock Text="{StaticResource str_recipe03}" HorizontalAlignment="Center" Margin="0,10,0,0" FontWeight="Bold" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- Footer Row -->
+        <TextBlock Text="Explore a world of potato recipes and enjoy cooking like never before!"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   Foreground="#666666"
+                   TextAlignment="Center"
+                   Grid.Row="2"/>
+    </Grid>
+</UserControl>

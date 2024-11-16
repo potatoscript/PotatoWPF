@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PotatoWPF.Views.ProfileUserControl"
+﻿<UserControl x:Class="PotatoWPF.Views.PotatoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              MinHeight="700" MinWidth="1000">
@@ -16,12 +16,12 @@
         <!-- Sidebar -->
         <ScrollViewer Grid.Column="0">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock Text="Profile" FontSize="16" Margin="8,5,0,5"/>
+                <TextBlock Text="Recipes" FontSize="16" Margin="8,5,0,5"/>
                 <TreeView SelectedItemChanged="MenuTreeView_SelectedItemChanged">
                     <TreeViewItem Header="Items">
-                        <TreeViewItem Header="Item 1" Margin="0,0,0,5" Tag="Item1View"/>
-                        <TreeViewItem Header="Item 2" Margin="0,0,0,5" Tag="Item2View"/>
-                        <TreeViewItem Header="Item 3" Margin="0,0,0,5" Tag="Item3View"/>
+                        <TreeViewItem Header="{StaticResource str_recipe01}" Margin="0,0,0,5" Tag="Recipe1View"/>
+                        <TreeViewItem Header="{StaticResource str_recipe02}" Margin="0,0,0,5" Tag="Recipe2View"/>
+                        <TreeViewItem Header="{StaticResource str_recipe03}" Margin="0,0,0,5" Tag="Recipe3View"/>
                     </TreeViewItem>
                 </TreeView>
             </StackPanel>

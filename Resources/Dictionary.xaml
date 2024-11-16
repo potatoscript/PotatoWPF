@@ -4,4 +4,15 @@
     <sys:String x:Key="str_OnCancelClicked">Are you sure you want to cancel the edits?</sys:String>
     <sys:String x:Key="str_OnApplyClicked">The data has been successfully updated.</sys:String>
     <sys:String x:Key="str_NoRowToChange">There are no rows to modify.</sys:String>
+    <sys:String x:Key="str_recipe01">GarlicHerbRoastedPotatoes</sys:String>
+    <sys:String x:Key="str_recipe02">FondantPotatoes</sys:String>
+    <sys:String x:Key="str_recipe03">GreekLemonPotatoes</sys:String>
+    <sys:String x:Key="icon_home">home</sys:String>
+    <sys:String x:Key="icon_recipe">recipe</sys:String>
+    <sys:String x:Key="icon_potato">potato</sys:String>
+    <sys:String x:Key="icon_tomato">tomato</sys:String>
+    <sys:String x:Key="icon_lemon">lemon</sys:String>
+    <sys:String x:Key="icon_cloth">cloth</sys:String>
+    <sys:String x:Key="icon_help">help</sys:String>
+
 </ResourceDictionary>

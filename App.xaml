@@ -13,9 +13,9 @@
             <!-- Define the string resource -->
             <!-- Define the dbDirectory resource with |DataDirectory| placeholder -->
             <sys:String x:Key="dbDirectory">data\</sys:String>
-
+            <sys:String x:Key="dbName">Recipes.db</sys:String>
             <!-- Define the base image URI as a string resource -->
-            <sys:String x:Key="BaseImageUri">pack://application:,,,/Resources/Images/</sys:String>
+            <sys:Uri x:Key="BaseImageUri">pack://application:,,,/Resources/Images/</sys:Uri>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

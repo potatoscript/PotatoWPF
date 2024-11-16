@@ -1,31 +1,71 @@
 ﻿<Window x:Class="PotatoWPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" 
+        Title="PotatoScript - Recipe Manager"
         WindowStartupLocation="CenterScreen"
         MaxHeight="750" MaxWidth="1000"
         MinHeight="750" MinWidth="1000"
-        WindowStyle="SingleBorderWindow">
+        WindowStyle="SingleBorderWindow"
+        xmlns:helper="clr-namespace:PotatoWPF.Data"
+        Background="#FFFDF5E6">
+
+    <Window.Resources>
+        <helper:ImagePathConverter x:Key="ImagePathConverter" />
+        <Style x:Key="centeredTextStyle" TargetType="MenuItem">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5,5" />
+        </Style>
+    </Window.Resources>
+
     <DockPanel>
         <!-- Menu -->
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Home" />
-            <MenuItem Header="User">
-                <MenuItem Header="Profile" Click="ProfileMenuItem_Click" />
-                <MenuItem Header="Settings" />
+        <Menu DockPanel.Dock="Top" Height="30">
+            <MenuItem Header="Home" Click="Home_Click" Style="{StaticResource centeredTextStyle}">
+                <MenuItem.Icon>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="{Binding Source={StaticResource icon_home}, Converter={StaticResource ImagePathConverter}}"
+                       Width="16" Height="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Help">
+            <MenuItem Header="Recipe" Style="{StaticResource centeredTextStyle}">
+                <MenuItem.Icon>
+                    <Image Source="{Binding Source={StaticResource icon_recipe}, 
+                        Converter={StaticResource ImagePathConverter}}"
+                        Width="16" Height="16"/>
+                </MenuItem.Icon>
+                <MenuItem Header="Potato" Click="PotatoMenuItem_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="{Binding Source={StaticResource icon_potato}, Converter={StaticResource ImagePathConverter}}"
+           Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Tomato" >
+                    <MenuItem.Icon>
+                        <Image Source="{Binding Source={StaticResource icon_tomato}, Converter={StaticResource ImagePathConverter}}"
+Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Lemon" >
+                    <MenuItem.Icon>
+                        <Image Source="{Binding Source={StaticResource icon_lemon}, Converter={StaticResource ImagePathConverter}}"
+Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Help" Style="{StaticResource centeredTextStyle}">
+                <MenuItem.Icon>
+                    <Image Source="{Binding Source={StaticResource icon_help}, Converter={StaticResource ImagePathConverter}}"
+Width="16" Height="16"/>
+                </MenuItem.Icon>
                 <MenuItem Header="About" />
                 <MenuItem Header="Support" />
             </MenuItem>
         </Menu>
 
         <!-- Content Area -->
-        <Grid Name="MainContentGrid">
-            <TextBlock Text="Welcome to PotatoScript WPF Project" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       FontSize="20"/>
+        <Grid Name="MainContentGrid" Background="WhiteSmoke" Margin="20">
         </Grid>
     </DockPanel>
 </Window>

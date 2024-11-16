@@ -11,21 +11,31 @@ namespace PotatoWPF
         public MainWindow()
         {
             InitializeComponent();
+            MainView();
         }
-
-        private void ProfileMenuItem_Click(object sender, RoutedEventArgs e)
+        private void MainView()
+        {
+            MainContentGrid.Children.Clear();
+            MenuView home = new MenuView();
+            MainContentGrid.Children.Add(home);
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            MainView();
+        }
+        private void PotatoMenuItem_Click(object sender, RoutedEventArgs e)
         {
             // Clear current content
             MainContentGrid.Children.Clear();
 
-            // Create an instance of the ProfileUserControl
-            ProfileUserControl profileControl = new ProfileUserControl();
+            // Create an instance of the PotatoView
+            PotatoView profileControl = new PotatoView();
 
             // Set horizontal and vertical alignment to Top and Left
             profileControl.HorizontalAlignment = HorizontalAlignment.Left;
             profileControl.VerticalAlignment = VerticalAlignment.Top;
 
-            // Add the ProfileUserControl to the MainContentGrid
+            // Add the PotatoView to the MainContentGrid
             MainContentGrid.Children.Add(profileControl);
         }
     }

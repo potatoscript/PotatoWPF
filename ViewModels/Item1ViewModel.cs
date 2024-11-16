@@ -1,10 +1,10 @@
-﻿using PotatoWPF.Models;
+﻿using PotatoWPF.Data;
+using PotatoWPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Windows;
 
 namespace PotatoWPF.ViewModels
@@ -13,12 +13,12 @@ namespace PotatoWPF.ViewModels
     {
         private readonly DBHelper dbHelper;
         SQLiteConnection connection;
-        //public List<Item1Model> DataList { get; } = new List<Item1Model>();
+        //public List<PotatoModel> DataList { get; } = new List<PotatoModel>();
 
         public List<string> PotatoOptions { get; set; }
 
-        private ObservableCollection<Item1Model> _dataList;
-        public ObservableCollection<Item1Model> DataList
+        private ObservableCollection<PotatoModel> _dataList;
+        public ObservableCollection<PotatoModel> DataList
         {
             get => _dataList;
             set => SetProperty(ref _dataList, value);
@@ -27,7 +27,7 @@ namespace PotatoWPF.ViewModels
         {
             dbHelper = new DBHelper();
 
-            DataList = new ObservableCollection<Item1Model>();
+            DataList = new ObservableCollection<PotatoModel>();
 
             PotatoOptions = new List<string>
             {
@@ -39,7 +39,7 @@ namespace PotatoWPF.ViewModels
                 "pack://application:,,,/Resources/Images/TwiceBakedPotatoes.jpg"
             };
             /*
-            var data = new Item1Model
+            var data = new PotatoModel
             {
                 ID = 1,
                 Title = "Potato",
@@ -52,12 +52,12 @@ namespace PotatoWPF.ViewModels
 
         }
 
-        public void ApplyChanges(List<string> editedRowIds, List<string> deletedRowIds, List<Item1Model> addedRowIds)
+        public void ApplyChanges(List<string> editedRowIds, List<string> deletedRowIds, List<PotatoModel> addedRowIds)
         {
             // Apply updates
             foreach (var id in editedRowIds)
             {
-                var editedItem = DataList.FirstOrDefault(d => d.ID.ToString() == id);
+                var editedItem = DataList.FirstOrDefault(d => d.Id.ToString() == id);
                 if (editedItem != null)
                 {
                     UpdateData(editedItem);
@@ -81,7 +81,7 @@ namespace PotatoWPF.ViewModels
         {
             try
             {
-                using (var connection = new SQLiteConnection($"Data Source={dbHelper.dbFilePath};Version=3;"))
+                using (var connection = new SQLiteConnection($"Data Source={dbHelper.DbFilePath};Version=3;"))
                 {
                     connection.Open();
                     string selectQuery = @"SELECT * FROM PotatoDBTable";
@@ -91,9 +91,9 @@ namespace PotatoWPF.ViewModels
                         {
                             while (reader.Read())
                             {
-                                var data = new Item1Model
+                                var data = new PotatoModel
                                 {
-                                    ID = Convert.ToInt32(reader["ID"]),
+                                    Id = Convert.ToInt32(reader["ID"]),
                                     Title = reader["TITLE"].ToString(),
                                     Type = reader["TYPE"].ToString(),
                                     Value = reader.GetDouble(reader.GetOrdinal("VALUE")),
@@ -112,11 +112,11 @@ namespace PotatoWPF.ViewModels
             }
         }
 
-        private void InsertData(Item1Model model)
+        private void InsertData(PotatoModel model)
         {
             try
             {
-                using (var connection = new SQLiteConnection($"Data Source={dbHelper.dbFilePath};Version=3;"))
+                using (var connection = new SQLiteConnection($"Data Source={dbHelper.DbFilePath};Version=3;"))
                 {
                     connection.Open();
                     string insertQuery = @"
@@ -138,9 +138,9 @@ namespace PotatoWPF.ViewModels
             }
         }
 
-        public void UpdateData(Item1Model target)
+        public void UpdateData(PotatoModel target)
         {
-            using (connection = new SQLiteConnection($"Data Source={dbHelper.dbFilePath};Version=3;"))
+            using (connection = new SQLiteConnection($"Data Source={dbHelper.DbFilePath};Version=3;"))
             {
                 connection.Open();
                 string updateQuery = @"
@@ -149,7 +149,7 @@ namespace PotatoWPF.ViewModels
                     WHERE ID = @ID";
                 using (var command = new SQLiteCommand(updateQuery, connection))
                 {
-                    command.Parameters.AddWithValue("@ID", target.ID);
+                    command.Parameters.AddWithValue("@ID", target.Id);
                     command.Parameters.AddWithValue("@Title", target.Title);
                     command.Parameters.AddWithValue("@Type", target.Type);
                     command.Parameters.AddWithValue("@Value", target.Value);
@@ -161,7 +161,7 @@ namespace PotatoWPF.ViewModels
 
         private void DeleteData(string id)
         {
-            using (connection = new SQLiteConnection($"Data Source={dbHelper.dbFilePath};Version=3;"))
+            using (connection = new SQLiteConnection($"Data Source={dbHelper.DbFilePath};Version=3;"))
             {
                 connection.Open();
                 string deleteQuery = @"DELETE FROM PotatoDBTable WHERE ID = @ID";

@@ -11,7 +11,7 @@
         <local:HeightToMaxDataGridHeightConverter x:Key="HeightToMaxDataGridHeightConverter"/>
     </UserControl.Resources>
 
-    <Border BorderBrush="Gray" BorderThickness="0" Padding="5">
+    <Border BorderBrush="Transparent" BorderThickness="0" Padding="5">
         <Grid>
             <!-- Define Row and Column structure for layout -->
             <Grid.RowDefinitions>
@@ -23,8 +23,10 @@
                 <RowDefinition Height="Auto" />
                 <!-- Add New Button -->
                 <RowDefinition Height="*" />
-                <!-- 適用, キャンセル -->
+                <!-- Image View -->
                 <RowDefinition Height="Auto" />
+                <!-- 適用, キャンセル -->
+                <RowDefinition Height="55" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -32,11 +34,11 @@
             </Grid.ColumnDefinitions>
 
             <!-- Title -->
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" x:Name="TitleTextBlock" 
-                       FontSize="20" 
+            <Label Grid.Row="0" Grid.ColumnSpan="2" x:Name="TitleLabel" 
+                       FontSize="18" 
                        FontWeight="Bold" 
                        HorizontalAlignment="Left" 
-                       Margin="5"/>
+                       Margin="3"/>
 
             <!-- DataGrid for showing data -->
             <DataGrid x:Name="DataGrid"  
@@ -44,21 +46,23 @@
                       Grid.ColumnSpan="2"    
                       Grid.Row="1"
                       CellEditEnding="OnEditNewDataGridCell"
+                      MouseLeftButtonUp="OnDataGridNewMouseLeftButtonUp"
                       AutoGenerateColumns="False" 
-                      AlternationCount="2"
-                      SelectionMode="Single"
                       HorizontalAlignment="Stretch" 
                       VerticalAlignment="Stretch"
                       CanUserAddRows="False" 
+                      BorderBrush="{StaticResource BorderBrush}" 
+                      BorderThickness="1" 
                       GridLinesVisibility="Horizontal"
-                      RowHeight="40" 
+                      RowHeight="40"
                       HeadersVisibility="All" 
                       Margin="0,5,0,5" 
                       Padding="5" 
                       RowHeaderWidth="0"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      AlternationCount="2"
                       >
-
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -72,15 +76,15 @@
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="HorizontalAlignment" Value="Stretch" />
                         <Setter Property="VerticalAlignment" Value="Stretch" />
-                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
                         <Setter Property="Cursor" Value="Hand" />
                         <!-- Default Background for rows -->
-                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
 
                         <!-- Trigger for alternating row background color -->
                         <Style.Triggers>
-                            <Trigger Property="AlternationIndex" Value="1">
-                                <Setter Property="Background" Value="#F0F0F0" />
+                            <Trigger Property="AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
                                 <!-- Alternate row color -->
                             </Trigger>
 
@@ -90,7 +94,7 @@
                                 <!-- Highlight color on hover -->
                                 <Setter Property="Foreground" Value="Black" />
                             </Trigger>
-                            
+
                             <!-- Selected row color -->
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="#007ACC" />
@@ -103,23 +107,52 @@
             </DataGrid>
 
             <!-- Add New Button -->
-            <Button Style="{StaticResource AddButtonStyle}"
-                    Content="ADD" 
-                    Grid.Row="3" Grid.ColumnSpan="2"
+            <Button x:Name="AddButton"
+                    Content="Add" 
+                    Grid.Row="2" Grid.ColumnSpan="2"
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Top"
+                    Height="30"
                     Click="OnAddNewButtonClicked"/>
 
-            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom" 
-                        HorizontalAlignment="Right" Margin="0,10,20,0">
+            <Grid x:Name="ImageItems" Height="310" Grid.Row="3" Grid.ColumnSpan="2" Visibility="Collapsed">
+                <Border BorderBrush="#4A4A4A"
+                    BorderThickness="1"
+                    Margin="5, 10, 5, 0">
+                </Border>
+
+                <Label Name="ImageTitle"
+                   Content="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   FontSize="16"
+                   Foreground="LightGray"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Left"
+                   Margin="20,-5,0,0" />
+
+                <Image x:Name="Image" 
+                   Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   Margin="20"
+                   Stretch="Uniform"/>
+
+                <!-- ContentPresenter for dynamic Canvas content, layered above the Image -->
+                <ContentPresenter x:Name="CanvasContentPresenter"
+                  Content="{Binding CanvasContents, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Left"/>
+            </Grid>
+
+            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" 
+                        Orientation="Horizontal" 
+                        VerticalAlignment="Bottom" 
+                        HorizontalAlignment="Right" Margin="0,0,20,0">
                 <!-- Apply Button -->
                 <Button 
-                    Style="{StaticResource OkButtonStyle}"
+                    Height="30"
                     Content="OK" Click="OnApplyButtonClick" />
 
                 <!-- Cancel Button -->
                 <Button 
-                    Style="{StaticResource CancelButtonStyle}"
+                    Height="30"
                     Content="Cancel" Click="OnCancelButtonClick" />
             </StackPanel>
         </Grid>
